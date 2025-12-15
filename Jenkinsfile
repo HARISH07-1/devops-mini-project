@@ -1,7 +1,15 @@
 pipeline {
-    agent any
-
+    agent any  // runs on any available Jenkins agent
+    environment {
+        // Optional: explicitly set PATH if needed
+        PATH = "C:\\Terraform;C:\\Program Files\\Docker\\Docker\\Resources\\bin;${env.PATH}"
+    }
     stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
