@@ -1,37 +1,27 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    IMAGE_NAME = "devops-mini-app"
-  }
+    stages {
 
-  stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/your-username/devops-mini-project.git'
-      }
-    }
-
-    stage('Build Docker Image') {
-      steps {
-        sh 'docker build -t $IMAGE_NAME ./app'
-      }
-    }
-
-    stage('Terraform Init') {
-      steps {
-        dir('terraform') {
-          sh 'terraform init'
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image'
+                sh 'docker build -t devops-mini-project ./app'
+            }
         }
-      }
-    }
 
-    stage('Terraform Apply') {
-      steps {
-        dir('terraform') {
-          sh 'terraform apply -auto-approve'
+        stage('Terraform Init') {
+            steps {
+                echo 'Terraform init'
+                sh 'cd terraform && terraform init'
+            }
         }
-      }
+
+        stage('Terraform Apply') {
+            steps {
+                echo 'Terraform apply'
+                sh 'cd terraform && terraform apply -auto-approve'
+            }
+        }
     }
-  }
 }
