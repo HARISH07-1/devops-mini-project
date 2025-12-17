@@ -1,33 +1,28 @@
 pipeline {
-    agent any  // runs on any available Jenkins agent
+    agent any
+
     environment {
-        // Optional: explicitly set PATH if needed
-        PATH = "C:\\Terraform;C:\\Program Files\\Docker\\Docker\\Resources\\bin;${env.PATH}"
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_DEFAULT_REGION    = 'ap-south-1'
     }
+
     stages {
-        stage('Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
-                echo 'Building Docker image'
                 bat 'docker build -t devops-mini-project ./app'
             }
         }
 
         stage('Terraform Init') {
             steps {
-                echo 'Terraform init'
                 bat 'cd terraform && terraform init'
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                echo 'Terraform apply'
                 bat 'cd terraform && terraform apply -auto-approve'
             }
         }
