@@ -11,19 +11,22 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
+                echo 'Building Docker image'
                 bat 'docker build -t devops-mini-project ./app'
             }
         }
 
         stage('Terraform Init') {
             steps {
-                bat 'cd terraform && terraform init'
+                echo 'Terraform init'
+                bat 'cd terraform && C:\\terraform\\terraform.exe init'
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                bat 'cd terraform && terraform apply -auto-approve'
+                echo 'Terraform apply'
+                bat 'cd terraform && C:\\terraform\\terraform.exe apply -auto-approve'
             }
         }
     }
